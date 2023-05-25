@@ -1,0 +1,17 @@
+name: Docker Image CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Docker Login
+      run: docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_PASSWORD}}$DOCKER_PASSWORD
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_USER}}/rust-dev:${GITHUB_SHA::6}
+    - name: Docker Push
+      run: docker push ${{secrets.DOCKER_USER}}/rust-dev:${GITHUB_SHA::6}
