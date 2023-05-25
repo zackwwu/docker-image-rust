@@ -1,4 +1,4 @@
 FROM rust:latest AS builder
 
-RUN apt add build-essential
+RUN apt install build-essential
 RUN rustup component add clippy
